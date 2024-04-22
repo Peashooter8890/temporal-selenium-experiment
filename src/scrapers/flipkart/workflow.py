@@ -17,7 +17,7 @@ class FlipkartWorkflow:
         }
         try:
             await workflow.execute_activity_method(
-                FlipkartActivities.fetch_from_flipkart_and_plot_data,
+                FlipkartActivities.fetch_data_from_flipkart,
                 product_data,
                 start_to_close_timeout=timedelta(seconds=45),
                 retry_policy=RetryPolicy(

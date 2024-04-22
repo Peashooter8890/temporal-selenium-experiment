@@ -17,7 +17,7 @@ async def main():
             client,
             task_queue=TASK_QUEUE_NAME,
             workflows=[FlipkartWorkflow],
-            activities=[activities.fetch_from_flipkart_and_plot_data],
+            activities=[activities.fetch_data_from_flipkart],
             activity_executor=activity_executor,
         )
         logging.info(f"Starting the worker....{client.identity}")

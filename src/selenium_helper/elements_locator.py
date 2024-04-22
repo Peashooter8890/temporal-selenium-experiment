@@ -7,8 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
 class ElementLocator:
-    """A class that provides methods to locate elements on a webpage.
-    """
+    """A class that provides methods to locate elements on a webpage."""
     def __init__(self, driver: WebDriver):
         """Initializes the ElementLocator class.
 

@@ -1,16 +1,22 @@
 from selenium import webdriver
 from selenium.webdriver.remote.webdriver import WebDriver  # for type hints
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
+from webdriver_manager.microsoft import EdgeChromiumDriverManager
+from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from selenium.webdriver.edge.options import Options as EdgeOptions
 import logging
 
 class Driver:
-    def __init__(self, browser: str, headless: bool = True):
-        """_summary_
+    def __init__(self, browser: str = 'chrome', headless: bool = True):
+        """Initializes the Driver instance with the requested browser and headless mode. Does not support OS-specific browsers like Safari or Internet Explorer.
 
         Args:
-            browser (str): A string representing the browser to use. Supported browsers are 'chrome', 'firefox', 'edge', and 'safari'.
+            browser (str): A string representing the browser to use. Supported browsers are 'chrome', 'firefox', and 'edge'. Defaults to 'chrome'.
             headless (bool, optional): A bool specifying if the driver should be headless. Defaults to True.
         """
-        self.browser = browser
+        self.browser = browser.lower()
         self.headless = headless
 
     def get_driver(self) -> WebDriver:
@@ -28,42 +34,40 @@ class Driver:
             return self._get_firefox_driver()
         elif self.browser == 'edge':
             return self._get_edge_driver()
-        elif self.browser == 'safari':
-            return self._get_safari_driver()
         else:
-            raise ValueError(f'Unsupported browser: {self.browser}')
-
-    def test_driver(self) -> bool:
-        """Tests if the driver is working by opening the selenium website and fetching the title.
+            raise ValueError(f"Unsupported browser: {self.browser}")
+        
+    def install_drivers(self) -> bool:
+        """Installs the required drivers for the supported browsers.
 
         Returns:
-            bool: True if the driver is working, False otherwise.
+            bool: True if the drivers were installed successfully, False otherwise.
         """
-        driver = self.get_driver()
         try:
-            driver.get('https://www.selenium.dev')
-            if not driver.title:
-                return False
-            logging.info(f'Driver test successful: {self.browser}')
-            return True
-        except Exception:
-            logging.error(f'Error testing driver: {self.browser}')
+            ChromeDriverManager().install()
+            GeckoDriverManager().install()
+            EdgeChromiumDriverManager().install()
+        except Exception as e:
+            logging.error(f"Error installing drivers: {e}")
             return False
-        finally:
-            driver.quit()
-
+        return True
+    
     def _get_chrome_driver(self) -> WebDriver:
-        options = webdriver.ChromeOptions()
-        options.add_experimental_option('detach', True) # without this, selenium will close the browser after the test (happened on a single macOS)
+        options = ChromeOptions()
+        options.add_experimental_option('detach', True)  # without this, selenium might close the browser after the test
         if self.headless:
-            options.add_argument('--headless=new')
+            options.add_argument('--headless')
         return webdriver.Chrome(options=options)
 
     def _get_firefox_driver(self) -> WebDriver:
-        return webdriver.Firefox()
-
-    def _get_safari_driver(self) -> WebDriver:
-        return webdriver.Safari()
+        options = FirefoxOptions()
+        if self.headless:
+            options.add_argument('--headless')
+        return webdriver.Firefox(options=options)
 
     def _get_edge_driver(self) -> WebDriver:
-        return webdriver.Edge()
+        options = EdgeOptions()
+        if self.headless:
+            options.add_argument('--headless')
+        return webdriver.Edge(options=options)
+    
