@@ -1,0 +1,10 @@
+matplotlib==3.8.4
+pandas==2.2.2
+psycopg2_binary==2.9.9
+pytest==8.1.1
+python-dotenv==1.0.1
+python_dateutil==2.9.0.post0
+Requests==2.31.0
+selenium==4.19.0
+temporalio==1.5.1
+webdriver_manager==4.0.1
