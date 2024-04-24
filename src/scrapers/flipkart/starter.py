@@ -1,7 +1,7 @@
 import asyncio
 from temporalio.client import Client
 from .workflow import FlipkartWorkflow
-from .shared import TASK_QUEUE_NAME, WORKFLOW_ID
+from .config import TASK_QUEUE_NAME, WORKFLOW_ID
 
 async def main():
     client = await Client.connect("localhost:7233", namespace="default")

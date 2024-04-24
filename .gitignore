@@ -1,3 +1,6 @@
 .env
 __pycache__
 pseudo.txt
+cheat_sheet.txt
+.pytest_cache
+.vscode

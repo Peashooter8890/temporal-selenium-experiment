@@ -5,7 +5,7 @@ from temporalio.client import Client
 from temporalio.worker import Worker
 from .workflow import FlipkartWorkflow
 from .activities import FlipkartActivities
-from .shared import TASK_QUEUE_NAME
+from .config import TASK_QUEUE_NAME
 
 async def main():
     logging.basicConfig(level=logging.INFO)
@@ -17,7 +17,7 @@ async def main():
             client,
             task_queue=TASK_QUEUE_NAME,
             workflows=[FlipkartWorkflow],
-            activities=[activities.fetch_data_from_flipkart],
+            activities=[activities.fetch_data_from_flipkart, activities.submit_data_to_database],
             activity_executor=activity_executor,
         )
         logging.info(f"Starting the worker....{client.identity}")

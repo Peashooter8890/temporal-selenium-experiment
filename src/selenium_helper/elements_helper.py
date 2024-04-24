@@ -7,7 +7,7 @@ class ElementsHelper:
     def __init__(self, driver: WebDriver):
         self.driver = driver
         
-    def get_element_by_locator(self, by_type: str, locator: str) -> WebElement:
+    def get_element_by_locator(self, by_type: str, locator: str, minimum_wait_seconds: int = 10) -> WebElement:
         """Fetches an element on a webpage with a specified locator.
 
         Args:
@@ -21,12 +21,12 @@ class ElementsHelper:
             WebElement: The located element.
         """
         try:
-            element: WebElement = ElementLocator(self.driver).fetch_element_after_wait(by_type, locator)
+            element: WebElement = ElementLocator(self.driver).fetch_element_after_wait(by_type, locator, minimum_wait_seconds)
         except Exception:
             raise
         return element
     
-    def get_elements_by_locator(self, by_type: str, locator: str) -> list[WebElement]:
+    def get_elements_by_locator(self, by_type: str, locator: str, minimum_wait_seconds: int = 10) -> list[WebElement]:
         """Fetches all elements on a webpage with a specified locator.
 
         Args:
@@ -40,7 +40,7 @@ class ElementsHelper:
             list[WebElement]: A list of elements with the specified locator.
         """
         try:
-            elements: list[WebElement] = ElementLocator(self.driver).fetch_all_elements_after_wait(by_type, locator)
+            elements: list[WebElement] = ElementLocator(self.driver).fetch_all_elements_after_wait(by_type, locator, minimum_wait_seconds)
         except Exception:
             raise
         return elements
